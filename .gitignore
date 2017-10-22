@@ -1,0 +1,6 @@
+**/*.pyc
+tf_files
+.idea/
+**/*~
+libs/
+local.properties
