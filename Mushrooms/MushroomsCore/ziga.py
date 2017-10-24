@@ -1,6 +1,6 @@
 from .scripts.label_image import process_image
 
-image_path = '/home/maxim/Code/Python/Mushrooms/temp/data.jpg'
+image_path = '/home/yurok-e/Документы/code_/Python/mushrooms-classifier/Mushrooms/temp/data.jpg'
 
 
 def handle_uploaded_file(file):
