@@ -19,6 +19,7 @@ from __future__ import print_function
 
 import argparse
 import sys
+import os
 
 import numpy as np
 import tensorflow as tf
@@ -72,8 +73,8 @@ def load_labels(label_file):
 
 def process_image(file_path):
     file_name = file_path
-    model_file = "/home/yurok-e/Документы/code_/Python/mushrooms-classifier/Mushrooms/MushroomsCore/tf_files/retrained_graph.pb"
-    label_file = "/home/yurok-e/Документы/code_/Python/mushrooms-classifier/Mushrooms/MushroomsCore/tf_files/retrained_labels.txt"
+    model_file = os.getcwd() + "/MushroomsCore/tf_files/retrained_graph.pb"
+    label_file = os.getcwd() + "/MushroomsCore/tf_files/retrained_labels.txt"
     input_height = 224
     input_width = 224
     input_mean = 128
