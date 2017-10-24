@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mushrooms Neural Network</title>
+</head>
+<body>
+    <form enctype="multipart/form-data" method="post" action="/mushrooms/">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Обработать">
+    </form>
+</body>
+</html>
