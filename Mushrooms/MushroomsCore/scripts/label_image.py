@@ -25,6 +25,15 @@ import numpy as np
 import tensorflow as tf
 
 
+class Result:
+    def __init__(self, name, probability):
+        self.name = name
+        self.probability = probability
+
+    def as_dict(self):
+        return {'name': self.name, 'probability': float(self.probability)}
+
+
 def load_graph(model_file):
     graph = tf.Graph()
     graph_def = tf.GraphDef()
@@ -101,7 +110,10 @@ def process_image(file_path):
 
     top_k = results.argsort()[-5:][::-1]
     labels = load_labels(label_file)
-    return str((labels[list(results).index(max(results))], max(results)))
+
+    result = Result(labels[list(results).index(max(results))], max(results))
+
+    return result
 
 
 if __name__ == "__main__":
