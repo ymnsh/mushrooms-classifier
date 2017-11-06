@@ -20,5 +20,6 @@ from django.views.generic.base import RedirectView
 urlpatterns = [
     url(r'^mushrooms/', include('MushroomsCore.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^api/', include('MushroomsCore.urls')),
     url(r'^$', RedirectView.as_view(url='/mushrooms'))
 ]

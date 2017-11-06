@@ -1,21 +1,39 @@
-from django.shortcuts import render
+import uuid
+
 from django.http import JsonResponse
+from django.shortcuts import render
+
+from .c12n import categories
 from .forms.mushrooms.file_upload_form import FileForm
 from .image_handler import handle_uploaded_file
-from .c12n import categories
+
+
+def api_recognise(request):
+    if request.method == 'POST':  # byte-array
+        file = request.FILES['file']
+
+        result = handle_uploaded_file(file, request.session['session_uuid'])
+
+        params = {
+            'result_name': result.name,
+            'result_probability': float(result.probability)
+        }
+
+        return JsonResponse(params)
 
 
 def index(request):
+    if request.session.get('session_uuid') is None:
+        request.session['session_uuid'] = str(uuid.uuid4())
+
     if request.method == 'POST':
 
         form = FileForm(request.POST, request.FILES)
 
-        file = request.FILES['file']
-
-        result = handle_uploaded_file(file)
-
-        # Запрос с web-клиента
         if form.is_valid():
+            file = request.FILES['file']
+
+            result = handle_uploaded_file(file, request.session['session_uuid'])
 
             params = {
                 'result_name': categories[result.name],
@@ -24,11 +42,7 @@ def index(request):
 
             return render(request, 'mushrooms/thanks.html', params)
 
-        # Запрос с иного клиента
-        else:
-            return JsonResponse(result.as_dict())
-
     else:
         form = FileForm()
 
-    return render(request, 'mushrooms/index.html', {'form': form})
+        return render(request, 'mushrooms/index.html', {'form': form})

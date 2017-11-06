@@ -111,7 +111,10 @@ def process_image(file_path):
     top_k = results.argsort()[-5:][::-1]
     labels = load_labels(label_file)
 
-    result = Result(labels[list(results).index(max(results))], max(results))
+    result = []
+
+    for i in top_k:
+        result += Result(name=labels[i], probability=results[i])
 
     return result
 
