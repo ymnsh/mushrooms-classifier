@@ -1,25 +1,30 @@
 import uuid
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 from .c12n import categories
 from .forms.mushrooms.file_upload_form import FileForm
-from .image_handler import handle_uploaded_file
+from .image_handler import handle_uploaded_file, handle_uploaded_bytearray
 
 
+@csrf_exempt
 def api_recognise(request):
-    if request.method == 'POST':  # byte-array
-        file = request.FILES['file']
+    if request.method == 'POST':
 
-        result = handle_uploaded_file(file, request.session['session_uuid'])
+        file_as_bytearray = request.body
+
+        result = handle_uploaded_bytearray(file_as_bytearray, request.session['session_uuid'])
 
         params = {
-            'result_name': result.name,
-            'result_probability': float(result.probability)
+            'result_name': result[0].name,
+            'result_probability': float(result[0].probability)
         }
 
         return JsonResponse(params)
+    else:
+        return HttpResponse("You should send POST request with your file as bytearray in body")
 
 
 def index(request):
@@ -35,10 +40,17 @@ def index(request):
 
             result = handle_uploaded_file(file, request.session['session_uuid'])
 
-            params = {
-                'result_name': categories[result.name],
-                'result_probability': round(result.probability * 100, 2)
-            }
+            if result[0].probability < 0.6:
+                params = {
+                    'result_name': categories[result[0].name] + " или " + categories[result[1].name],
+                    'result_probability': str(round(result[0].probability * 100, 2)) + " и " +
+                                          str(round(result[1].probability * 100, 2))
+                }
+            else:
+                params = {
+                    'result_name': categories[result[0].name],
+                    'result_probability': round(result[0].probability * 100, 2)
+                }
 
             return render(request, 'mushrooms/thanks.html', params)
 

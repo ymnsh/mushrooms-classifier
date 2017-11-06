@@ -114,7 +114,7 @@ def process_image(file_path):
     result = []
 
     for i in top_k:
-        result += Result(name=labels[i], probability=results[i])
+        result.append(Result(name=labels[i], probability=results[i]))
 
     return result
 

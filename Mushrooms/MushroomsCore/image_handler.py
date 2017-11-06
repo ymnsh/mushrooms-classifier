@@ -11,3 +11,12 @@ def handle_uploaded_file(file, session_uuid):
     destination.close()
 
     return process_image(image_path)
+
+
+def handle_uploaded_bytearray(bytearray, session_uuid):
+    image_path = os.getcwd() + "/temp/data_{}.jpg".format(session_uuid)
+    with open(image_path, 'wb+') as destination:
+        destination.write(bytearray)
+    destination.close()
+
+    return process_image(image_path)

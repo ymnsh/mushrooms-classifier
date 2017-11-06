@@ -3,5 +3,10 @@ categories = {
     'muhomor': 'Мухомор',
     'gruzd': 'Груздь',
     'opyata': 'Опята',
-    'shampinyon': 'Шампиньон'
+    'shampinyon': 'Шампиньон',
+    'volnushka': 'Волнушка',
+    'siroejki': 'Сыроежки',
+    'maslyata': 'Маслята',
+    'skripun': 'Скрипун',
+    'lisichki': 'Лисички'
 }
