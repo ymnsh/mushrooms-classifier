@@ -11,6 +11,7 @@ from .image_handler import handle_uploaded_file, handle_uploaded_bytearray
 
 @csrf_exempt
 def api_recognise(request):
+    set_session_uuid(request)
     if request.method == 'POST':
 
         file_as_bytearray = request.body
@@ -27,10 +28,13 @@ def api_recognise(request):
         return HttpResponse("You should send POST request with your file as bytearray in body")
 
 
-def index(request):
+def set_session_uuid(request):
     if request.session.get('session_uuid') is None:
         request.session['session_uuid'] = str(uuid.uuid4())
 
+
+def index(request):
+    set_session_uuid(request)
     if request.method == 'POST':
 
         form = FileForm(request.POST, request.FILES)
